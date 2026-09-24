@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="暮らしの疑問から、AIとのちょうどいい付き合い方を学ぶカード型アプリ">
+  <meta name="theme-color" content="#15162b">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2315162b'/%3E%3Cpath d='M17 42 28 15h8l11 27h-8l-2-6H27l-2 6zm12-12h6l-3-9z' fill='%23fff'/%3E%3Ccircle cx='49' cy='16' r='7' fill='%23ffcc6a'/%3E%3C/svg%3E">
+  <title>AIまなびば</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./fix.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="AIまなびば ホーム"><span class="brand-mark">A!</span><span>AIまなびば</span></a>
+    <nav aria-label="ページ内メニュー">
+      <button class="nav-link active" data-view="learn">まなぶ</button>
+      <button class="nav-link" data-view="progress">きろく</button>
+    </nav>
+    <button class="avatar-button" id="avatarButton" aria-label="ナビゲーターを変更"><img id="miniAvatar" src="./assets/pechi.png" alt="ふわペチ"></button>
+  </header>
+
+  <main id="top">
+    <section class="view" id="learnView">
+      <div class="intro-grid">
+        <div class="intro-copy">
+          <p class="eyebrow">3分でひとつ、AIのこと</p>
+          <h1>何を<br><em>調べたい？</em></h1>
+          <p class="lead">むずかしい言葉は抜き。気になるカードをめくって、AIを鵜呑みにしないコツを見つけよう。</p>
+          <div class="guide-bubble" aria-live="polite"><span id="guideName">ふわペチ</span><p id="guideLine">いっしょに、気になることから見てみるだふわ！</p></div>
+        </div>
+        <button class="hero-character" id="heroCharacter" aria-label="ナビゲーターを変更">
+          <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
+          <img id="heroImage" src="./assets/pechi.png" alt="ふわペチ">
+          <span class="swap-hint">ナビをかえる ↗</span>
+        </button>
+      </div>
+
+      <section class="finder" aria-labelledby="finderTitle">
+        <div class="finder-head">
+          <div><p class="section-number">01</p><h2 id="finderTitle">気分に近い入口から</h2></div>
+          <label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="キーワードで探す" autocomplete="off"></label>
+        </div>
+        <div class="filter-tabs" role="tablist" aria-label="カードの探し方">
+          <button class="filter-tab active" data-mode="purpose" role="tab" aria-selected="true">目的で探す</button>
+          <button class="filter-tab" data-mode="scene" role="tab" aria-selected="false">シーンで探す</button>
+        </div>
+        <div class="chips" id="chips" aria-label="絞り込み"></div>
+      </section>
+
+      <section class="cards-section" aria-labelledby="cardsTitle">
+        <div class="section-title"><div><p class="section-number">02</p><h2 id="cardsTitle">カードをめくってみよう</h2></div><p><strong id="resultCount">0</strong> 枚みつかったよ</p></div>
+        <div class="card-grid" id="cardGrid"></div>
+        <div class="empty" id="emptyState" hidden><span>?</span><h3>カードが見つかりませんでした</h3><p>別の言葉やカテゴリで探してみてね。</p></div>
+      </section>
+    </section>
+
+    <section class="view progress-view" id="progressView" hidden>
+      <div class="progress-hero">
+        <div><p class="eyebrow">YOUR LEARNING LOG</p><h1>知ったことが、<br><em>判断する力になる。</em></h1></div>
+        <div class="score-ring" id="scoreRing"><span id="scoreNumber">0</span><small>枚クリア</small></div>
+      </div>
+      <div class="progress-panel">
+        <div class="progress-row"><div><h2>今週のまなび</h2><p id="progressText">最初のカードをめくってみよう</p></div><button class="primary-button" data-return-learn>カードを選ぶ</button></div>
+        <div class="progress-track"><span id="progressBar"></span></div>
+        <div class="badges" id="badges"></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="navigatorDialog" class="navigator-dialog">
+    <form method="dialog" class="dialog-card">
+      <div class="dialog-head"><div><p class="section-number">NAVIGATOR</p><h2>だれと学ぶ？</h2></div><button class="close-button" value="cancel" aria-label="閉じる">×</button></div>
+      <div class="navigator-options" id="navigatorOptions"></div>
+    </form>
+  </dialog>
+
+  <button class="anam-launcher" id="anamLauncher" type="button" aria-haspopup="dialog" aria-controls="anamDialog">
+    <span class="anam-live-dot" aria-hidden="true"></span>
+    <span><strong>AIナビと話す</strong><small>声で質問できます</small></span>
+  </button>
+
+  <dialog id="anamDialog" class="anam-dialog" aria-labelledby="anamTitle">
+    <div class="anam-panel">
+      <header class="anam-head">
+        <div><p class="section-number">LIVE AI NAVIGATOR</p><h2 id="anamTitle">AIナビゲーターに聞いてみよう</h2></div>
+        <button class="close-button" id="anamClose" type="button" aria-label="AIナビゲーターを閉じる">×</button>
+      </header>
+      <p class="anam-help">「Start Call」を押して、AIについて気になることを話しかけてください。マイクの使用許可が表示されたら「許可」を選びます。</p>
+      <div class="anam-frame-wrap">
+        <iframe id="anamFrame" title="Anam AIナビゲーター" allow="microphone; camera; autoplay; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p class="anam-fallback">画面が表示されない場合は、<a href="https://lab.anam.ai/share/KP40BRfb-o_gZNUbdhGOY" target="_blank" rel="noopener noreferrer">AIナビゲーターを別画面で開く</a></p>
+    </div>
+  </dialog>
+
+  <template id="cardTemplate">
+    <article class="qa-card">
+      <button class="card-face card-front" aria-expanded="false">
+        <span class="card-meta"></span><h3></h3><span class="card-cta">答えを見る <b>↗</b></span>
+      </button>
+      <div class="card-face card-back" hidden>
+        <button class="card-close" aria-label="質問面に戻る">×</button>
+        <p class="character-line"></p><h3></h3><p class="answer"></p>
+        <div class="tip"><strong>💡 すぐ使えるヒント</strong><p></p></div>
+        <div class="card-actions"><button class="done-button">わかった！</button><button class="route-button"></button></div>
+      </div>
+    </article>
+  </template>
+  <script src="./app.js"></script>
+  <link rel="stylesheet" href="./anam.css">
+</body>
+</html>
